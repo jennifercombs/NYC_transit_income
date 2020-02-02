@@ -1,4 +1,4 @@
-# Note: Much of this code has come from that shared by Timo Grossenbacher
+# note: much of this code has come from that shared by Timo Grossenbacher
 # in his blog: https://timogrossenbacher.ch/2019/04/bivariate-maps-with-ggplot2-and-sf/
 # the color scheme was inspired by one shared by Joshua Stevens in his blog:
 #https://www.joshuastevens.net/cartography/make-a-bivariate-choropleth-map/
@@ -10,7 +10,6 @@ library(sf)
 library(tidycensus)
 library(ggthemes)
 library(cowplot)
-library(extrafont)
 
 water1 <- st_read("data", "tl_2019_36047_areawater")
 water2 <- st_read("data", "tl_2019_36081_areawater")
@@ -18,6 +17,7 @@ water3 <- st_read("data", "tl_2019_36085_areawater")
 water4 <- st_read("data", "tl_2019_36061_areawater")
 water5 <- st_read("data", "tl_2019_36005_areawater")
 water <- rbind(water1, water2, water3, water4, water5)
+rm(water1, water2, water3, water4, water5)
 
 census_api_key("INSERT API KEY HERE")
 
@@ -85,8 +85,7 @@ map <-
     data = nyc,
     fill = "grey95",
     color = NA,
-    size = 0.1
-  )+
+    size = 0.1)+
   geom_sf(
     data = nyc,
     aes(fill = fill),
@@ -112,8 +111,7 @@ map <-
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank(),
-    axis.line = element_blank()
-  ) +
+    axis.line = element_blank()) +
   annotate( 
     geom = "curve", x = -74.05, y = 40.87, xend = -73.93, yend = 40.84, 
     curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
