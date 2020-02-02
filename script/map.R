@@ -53,27 +53,21 @@ bivariate_color_scale <- tibble(
   "1 - 2" = "#a1c9a9",
   "3 - 1" = "#6c83b5", # high transit, low income
   "2 - 1" = "#b5c0da",
-  "1 - 1" = "#d6e5e5" # low transit, low income
-) %>%
+  "1 - 1" = "#d6e5e5") %>%  # low transit, low income
   gather("group", "fill")
 
 nyc <- nyc %>%
-  mutate(
-    pt_quantiles = cut(
+  mutate(pt_quantiles = cut(
       percent_pt,
       breaks = quantiles_pt,
-      include.lowest = TRUE
-    ),
+      include.lowest = TRUE),
     inc_quantiles = cut(
       medincome,
       breaks = quantiles_inc,
-      include.lowest = TRUE
-    ),
+      include.lowest = TRUE),
     group = paste(
       as.numeric(pt_quantiles), "-",
-      as.numeric(inc_quantiles)
-    )
-  ) %>%
+      as.numeric(inc_quantiles))) %>% 
   left_join(bivariate_color_scale, by = "group")
 
 
@@ -112,30 +106,66 @@ map <-
     axis.text.y = element_blank(),
     axis.ticks = element_blank(),
     axis.line = element_blank()) +
-  annotate( 
-    geom = "curve", x = -74.05, y = 40.87, xend = -73.93, yend = 40.84, 
-    curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
-  annotate(geom = "text", x = -74.145, y = 40.88, 
+  annotate( geom = "curve", 
+            x = -74.05, 
+            y = 40.87, 
+            xend = -73.93, 
+            yend = 40.84, 
+            curvature = .3, 
+            arrow = arrow(length = unit(2, "mm"))) +
+  annotate(geom = "text", 
+           x = -74.145, 
+           y = 40.88, 
            label = "Blue areas have\nhigh transit use and\nlow median incomes", 
-           hjust = "left", size = 2.5, color = "grey30", lineheight = .9)+
-  annotate( 
-    geom = "curve", x = -74.1, y = 40.49, xend = -74.2, yend = 40.52, 
-    curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
-  annotate(geom = "text", x = -74.1, y = 40.475, 
+           hjust = "left", 
+           size = 2.5, 
+           color = "grey30", 
+           lineheight = .9)+
+  annotate(geom = "curve", 
+           x = -74.1, 
+           y = 40.49, 
+           xend = -74.2, 
+           yend = 40.52, 
+           curvature = .3, 
+           arrow = arrow(length = unit(2, "mm"))) +
+  annotate(geom = "text",
+           x = -74.1, 
+           y = 40.475, 
            label = "Green areas have\nlow transit use and\nhigh median incomes", 
-           hjust = "left", size = 2.5, color = "grey30", lineheight = .9)+
-  annotate(
-    geom = "curve", x = -74.08, y = 40.75, xend = -73.985, yend = 40.785, 
-    curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
-  annotate(geom = "text", x = -74.175, y = 40.76, 
+           hjust = "left", 
+           size = 2.5, 
+           color = "grey30", 
+           lineheight = .9)+
+  annotate(geom = "curve", 
+           x = -74.08, 
+           y = 40.75, 
+           xend = -73.985, 
+           yend = 40.785, 
+           curvature = .3, 
+           arrow = arrow(length = unit(2, "mm"))) +
+  annotate(geom = "text", 
+           x = -74.175, 
+           y = 40.76, 
            label = "Dark teal areas have\nhigh transit use and\nhigh median incomes", 
-           hjust = "left", size = 2.5, color = "grey30", lineheight = .9)+
-  annotate(
-    geom = "curve", x = -74.1, y = 40.68, xend = -74, yend = 40.635, 
-    curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
-  annotate(geom = "text", x = -74.2, y = 40.69, 
+           hjust = "left", 
+           size = 2.5, 
+           color = "grey30", 
+           lineheight = .9)+
+  annotate(geom = "curve", 
+           x = -74.1, 
+           y = 40.68, 
+           xend = -74, 
+           yend = 40.635, 
+           curvature = .3, 
+           arrow = arrow(length = unit(2, "mm"))) +
+  annotate(geom = "text", 
+           x = -74.2, 
+           y = 40.69, 
            label = "Light teal areas have\nlow transit use and\nlow median incomes", 
-           hjust = "left", size = 2.5, color = "grey30", lineheight = .9)
+           hjust = "left",
+           size = 2.5, 
+           color = "grey30", 
+           lineheight = .9)
 
 bivariate_color_scale %<>%
   separate(group, into = c("pt", "inc"), sep = " - ") %>%
@@ -149,12 +179,11 @@ legend <-
     mapping = aes(
       x = pt,
       y = inc,
-      fill = fill)
-  ) +
+      fill = fill)) +
   scale_fill_identity() +
   coord_fixed()+
   labs(x = expression("Higher transit use"%->%" "),
-  y = expression('Higher income'%->%' '))+
+       y = expression('Higher income'%->%' '))+
   theme(text = element_text(family = "SourceSansPro-Light",
                             color = "grey10",
                             size = 7),
